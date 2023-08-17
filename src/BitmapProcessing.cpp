@@ -32,42 +32,24 @@ const rgb24 blueColor = {0, 0, 255};
 
 void Init_matrix(int brightness)
 {
-    // тут може почати ребутитись після будь якого поінта як собі захоче,
-    // залежить від прошивки. можна раз прошити буде постійно ребутитись після "point 1.4"
-    // нічого не змінюєш в прошивці прошиваєш і воно вже починає постійно ребутитись після "point 1.2"
-    //
-Serial.println("point 1");
-    Serial.println(esp_get_free_heap_size());
-    
-    Serial.println("point 1.1");
-    Serial.println(esp_get_free_heap_size());
     matrix.addLayer(&backgroundLayer);
-    Serial.println("point 1.2");
-    Serial.println(esp_get_free_heap_size());
+    
     matrix.addLayer(&scrollingLayer);
-    Serial.println("point 1.3");
-    Serial.println(esp_get_free_heap_size());
+    
     matrix.addLayer(&indexedLayer);
-    Serial.println("point 1.4");
-    Serial.println(esp_get_free_heap_size());
 
     matrix.begin();
 
     matrix.setBrightness(((brightness * 255) / 100));
-    Serial.println("point 1.5");
-    Serial.println(esp_get_free_heap_size());
+    
     scrollingLayer.setOffsetFromTop(defaultScrollOffset);
-    Serial.println("point 1.6");
-    Serial.println(esp_get_free_heap_size());
+    
     backgroundLayer.enableColorCorrection(true);
-    Serial.println("point 1.7");
-    Serial.println(esp_get_free_heap_size());
+    
     backgroundLayer.fillScreen(redColor);
-    Serial.println("point 1.8");
-    Serial.println(esp_get_free_heap_size());
+    
     backgroundLayer.swapBuffers();
-    Serial.println("point 1.9");
-    Serial.println(esp_get_free_heap_size()); 
+     
 }
 
 void ClearBuffer()

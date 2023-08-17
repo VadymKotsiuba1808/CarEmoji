@@ -33,20 +33,13 @@ void setup()
   }
   InitPin();
   dataStruct.brightness = oldBrigtness = ReadBrightness();
-  log_e("oldBrigtness value is %i", oldBrigtness); // до цего місця прогрмма  відпрацьовує і в консоль навіть виводить значення яке було зчитане
-  Init_matrix(oldBrigtness);                       // а далі цього методу не проходить
+  log_e("oldBrigtness value is %i", oldBrigtness);
+  Init_matrix(oldBrigtness);                       
 
-  
-  // DrawBitmap(DefaultBitmap);
-  // SetBackGround(127,127,127);
-  // delay(10000);
 }
 
 void loop()
 {
-  DrawBitmap(DefaultBitmap);
-  /*
-
   // Serial.print("Start loop ");
   GetReceivedDataBT(&dataStruct);
   BatarryMonitor();
@@ -174,7 +167,7 @@ void loop()
     
   }
   // Serial.print("point 8 ");
-  /////Batary Test/////////////////////////////////////////////////////////////////////////////////
+  /////Battery Test/////////////////////////////////////////////////////////////////////////////////
 
   // if (Serial.available() > 0)
   // {
@@ -201,6 +194,4 @@ void loop()
   //     TestBatCounter++;
   //   }
   // }
-
-*/
 }
