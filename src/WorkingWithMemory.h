@@ -9,6 +9,8 @@ int ReadBrightness();
 bool InitSPIFFS();
 void WriteMassage(String value);
 String ReadMassage();
+void WriteFirstRun();
+int ReadFirstRun();
 
 
 

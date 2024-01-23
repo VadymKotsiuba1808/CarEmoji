@@ -34,7 +34,7 @@ void setup()
   InitPin();
   dataStruct.brightness = oldBrigtness = ReadBrightness();
   log_e("oldBrigtness value is %i", oldBrigtness);
-  Init_matrix(oldBrigtness);                       
+  Init_matrix(oldBrigtness);                    
 
 }
 
@@ -73,7 +73,7 @@ void loop()
       if (i < (dataStruct.crippingLine.length() * 8) + 32)
       {
         CreepingLine(X, 9, charArr);
-        delay(5);
+        delay(10);
         i++;
         X--;
       }

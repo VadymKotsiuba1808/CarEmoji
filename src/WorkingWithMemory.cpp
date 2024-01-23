@@ -1,4 +1,5 @@
 #include <WorkingWithMemory.h>
+#include <BitmapImages.h>
 
 File myFile;
 bool state = true;
@@ -39,11 +40,10 @@ uint16_t DefaultBitmap[1024] = {0xFFFF, 0xFFFF, 0x0000, 0x0000, 0x0000, 0x0000, 
 
 bool InitSPIFFS()
 {
-
     if (!SPIFFS.begin(true))
     {
         state = false;
-        Serial.println("Помилка ініціалізації SPIFFS");
+        Serial.println("TEST_LOG: Error init SPIFFS");
 
         // якщо невдалось змонтувати файлову систему
         // Розділи для байтових масивів
@@ -53,7 +53,7 @@ bool InitSPIFFS()
             {
                 if (!SPIFFS.mkdir("/FAV_" + String(counter)))
                 {
-                    Serial.println("Помилка створення розділу для байтових масивів");
+                    Serial.println("TEST_LOG: Error when creation partition for images");
                 }
             }
         }
@@ -63,7 +63,7 @@ bool InitSPIFFS()
         {
             if (!SPIFFS.mkdir("/Massage"))
             {
-                Serial.println("Помилка створення розділу для текстових стрічок");
+                Serial.println("TEST_LOG: Error when creation partition for text lines");
             }
         }
 
@@ -72,15 +72,36 @@ bool InitSPIFFS()
         {
             if (!SPIFFS.mkdir("/Brightness"))
             {
-                Serial.println("Помилка створення розділу для цілочисельних значень");
+                Serial.println("TEST_LOG: Error when creation partition for brightness");
             }
         }
+
+        // Розділ для першого запуску
+        if (!SPIFFS.exists("/FirstRun"))
+        {
+            Serial.println("TEST_LOG: FirstRun not exist");
+            if (!SPIFFS.mkdir("/FirstRun"))
+            {
+                Serial.println("TEST_LOG: Error when creation partition for FirstRun");
+            }
+        }
+    }
+
+    SPIFFS.end();
+    SPIFFS.begin(true);
+
+    uint8_t status_first_run = ReadFirstRun();
+
+    if(status_first_run != 1)
+    {
+        Serial.println("TEST_LOG: It's first run, write default values and images");
         // записуєм дефолтні данні в комірки
+        WriteFirstRun();
         WriteMassage("");
         WriteBrightness(100);
         for (size_t i = 0; i < counter; i++)
         {
-            WriteFile(DefaultBitmap, i);
+            WriteFile(OtherBitmap[i], i);
         }
     }
 
@@ -201,4 +222,20 @@ String ReadMassage()
     mes = myFile.readString();
     myFile.close();
     return mes;
+}
+
+int ReadFirstRun()
+{
+    int status;
+    myFile = SPIFFS.open("/FirstRun", FILE_READ);
+    status = myFile.read();
+    myFile.close();
+    return status;
+}
+
+void WriteFirstRun()
+{
+    myFile = SPIFFS.open("/FirstRun", FILE_WRITE);
+    myFile.write((uint8_t)1U);
+    myFile.close();
 }
